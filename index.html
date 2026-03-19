@@ -1052,7 +1052,7 @@ async function fetchLive() {
     } catch(e) {}
   }
   const hapiTotal = HAPI.reduce((s,a) => s+a.mv, 0);
-  const consTotal = FLIP_V + hapiTotal;
+  const consTotal = 77036 + hapiTotal;
   document.querySelectorAll('.metric-val')[0].textContent = '$' + Math.round(consTotal).toLocaleString('en-US');
   document.querySelectorAll('.metric-val')[1].textContent = '$' + Math.round(hapiTotal).toLocaleString('en-US');
   const ts = document.querySelector('.topbar-sub');
