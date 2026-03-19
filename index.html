@@ -1038,6 +1038,29 @@ function updateRec() {
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 buildDonut(); buildAlloc(); buildPnl(); updateRec();
+  // ── PRECIOS EN TIEMPO REAL ──────────────────
+const AV_KEY = 'PEGA_TU_KEY_AQUI';
+const TICKER_IDX = {MSFT:2, QQQM:1, SMH:0, IBIT:3, ORCL:4};
+async function fetchLive() {
+  for (const [ticker, idx] of Object.entries(TICKER_IDX)) {
+    try {
+      const r = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${AV_KEY}`);
+      const d = await r.json();
+      const price = parseFloat(d['Global Quote']['05. price']);
+      if (!price) continue;
+      HAPI[idx].mv = +(price * HAPI[idx].sh).toFixed(2);
+    } catch(e) {}
+  }
+  const hapiTotal = HAPI.reduce((s,a) => s+a.mv, 0);
+  const consTotal = FLIP_V + hapiTotal;
+  document.querySelectorAll('.metric-val')[0].textContent = '$' + Math.round(consTotal).toLocaleString('en-US');
+  document.querySelectorAll('.metric-val')[1].textContent = '$' + Math.round(hapiTotal).toLocaleString('en-US');
+  const ts = document.querySelector('.topbar-sub');
+  if(ts) ts.textContent = 'En vivo · ' + new Date().toLocaleTimeString('es-PE') + ' · Hapi + Flip';
+}
+fetchLive();
+setInterval(fetchLive, 5 * 60 * 1000);
+// ────────────────────────────────────────────
 </script>
 </body>
 </html>
