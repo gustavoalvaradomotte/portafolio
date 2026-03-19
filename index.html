@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio · Gustavo Alvarado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --bg2: #111118;
+  --bg3: #1a1a24;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0eff8;
+  --text2: #8b8aa0;
+  --text3: #5a5970;
+  --green: #00e5a0;
+  --green2: rgba(0,229,160,0.12);
+  --red: #ff4d6d;
+  --red2: rgba(255,77,109,0.12);
+  --amber: #ffb547;
+  --amber2: rgba(255,181,71,0.1);
+  --blue: #5b8ff9;
+  --blue2: rgba(91,143,249,0.1);
+  --purple: #b17bff;
+  --purple2: rgba(177,123,255,0.1);
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.header-logo {
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.header-logo span { color: var(--green); }
+.header-meta {
+  font-size: 11px;
+  color: var(--text3);
+  text-align: right;
+}
+.live-dot {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 5px;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  background: var(--bg);
+}
+.tab {
+  padding: 14px 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--text3);
+  border-bottom: 2px solid transparent;
+  transition: all .2s;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.tab:hover { color: var(--text2); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); }
+
+/* ── MAIN ── */
+.main { padding: 28px 32px; max-width: 1200px; margin: 0 auto; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── METRIC CARDS ── */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--border2); }
+.card-label {
+  font-size: 10px;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 6px;
+}
+.card-val {
+  font-family: var(--font-head);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.card-sub { font-size: 11px; margin-top: 3px; }
+.g { color: var(--green); }
+.r { color: var(--red); }
+.m { color: var(--text2); }
+
+/* ── SECTION ── */
+.section-hdr {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── TABLE ── */
+.tbl-wrap { overflow-x: auto; margin-bottom: 24px; }
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.tbl th {
+  text-align: left;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.tbl td {
+  padding: 11px 10px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: rgba(255,255,255,0.02); }
+.tbl tfoot td {
+  padding: 11px 10px;
+  background: rgba(255,255,255,0.03);
+  font-weight: 500;
+  border-top: 1px solid var(--border2);
+}
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+}
+.pl-bar { height: 4px; border-radius: 2px; display: inline-block; vertical-align: middle; min-width: 2px; }
+
+/* ── CHART ── */
+.chart-wrap { position: relative; width: 100%; height: 280px; margin-bottom: 16px; }
+
+/* ── PROJECTION CONTROLS ── */
+.proj-controls {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.ctrl-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.ctrl-row:last-child { margin-bottom: 0; }
+.ctrl-label { font-size: 11px; color: var(--text2); min-width: 170px; }
+.ctrl-val { font-size: 12px; font-weight: 500; min-width: 80px; text-align: right; color: var(--green); }
+input[type=range] {
+  flex: 1;
+  -webkit-appearance: none;
+  height: 3px;
+  background: var(--border2);
+  border-radius: 2px;
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--green);
+  cursor: pointer;
+}
+input[type=number] {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  width: 90px;
+}
+select {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg2);
+  color: var(--text2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+  cursor: pointer;
+}
+.scenarios { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.scn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  color: var(--text3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.scn:hover { border-color: var(--border2); color: var(--text2); }
+.scn.active { background: var(--green2); border-color: var(--green); color: var(--green); }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 10px; font-size: 11px; color: var(--text3); }
+.legend-item { display: flex; align-items: center; gap: 5px; }
+.legend-sq { width: 10px; height: 10px; border-radius: 2px; }
+
+/* ── RECURRING ── */
+.rec-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+}
+.rec-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+.rec-label { min-width: 120px; color: var(--text2); }
+
+/* ── NEWS ── */
+.news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+@media(max-width:700px){ .news-grid { grid-template-columns: 1fr; } }
+.news-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.news-card:hover { border-color: var(--border2); background: var(--bg3); }
+.news-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; flex-wrap: wrap; }
+.news-tag { font-size: 10px; padding: 2px 9px; border-radius: 20px; font-weight: 500; }
+.tag-msft { background: rgba(91,143,249,0.15); color: #5b8ff9; border: 1px solid rgba(91,143,249,0.3); }
+.tag-ibit { background: rgba(255,181,71,0.12); color: #ffb547; border: 1px solid rgba(255,181,71,0.3); }
+.tag-smh  { background: rgba(177,123,255,0.12); color: #b17bff; border: 1px solid rgba(177,123,255,0.3); }
+.tag-orcl { background: rgba(0,229,160,0.1); color: #00e5a0; border: 1px solid rgba(0,229,160,0.25); }
+.tag-qqqm { background: rgba(255,77,109,0.1); color: #ff4d6d; border: 1px solid rgba(255,77,109,0.25); }
+.tag-mkt  { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.news-date { font-size: 10px; color: var(--text3); margin-left: auto; }
+.sent { font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+.sent-g { background: rgba(0,229,160,0.1); color: var(--green); }
+.sent-r { background: rgba(255,77,109,0.1); color: var(--red); }
+.sent-n { background: var(--bg3); color: var(--text3); }
+.news-title { font-family: var(--font-head); font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 5px; }
+.news-desc { font-size: 11px; color: var(--text2); line-height: 1.55; }
+
+/* ── ADVISOR ── */
+.advisor-header {
+  background: linear-gradient(135deg, rgba(0,229,160,0.06) 0%, rgba(91,143,249,0.06) 100%);
+  border: 1px solid rgba(0,229,160,0.15);
+  border-radius: 16px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.advisor-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green) 0%, var(--blue) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-head);
+  font-size: 18px;
+  font-weight: 800;
+  flex-shrink: 0;
+  color: var(--bg);
+}
+.advisor-name { font-family: var(--font-head); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.advisor-role { font-size: 11px; color: var(--text3); }
+
+.rec-section { margin-bottom: 28px; }
+.rec-section-title {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.rec-item {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  transition: border-color .2s;
+}
+.rec-item:hover { border-color: var(--border2); }
+.rec-item.buy  { border-left: 3px solid var(--green); }
+.rec-item.hold { border-left: 3px solid var(--amber); }
+.rec-item.sell { border-left: 3px solid var(--red); }
+.rec-item.watch { border-left: 3px solid var(--blue); }
+.rec-signal {
+  font-family: var(--font-head);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.sig-buy   { background: rgba(0,229,160,0.12); color: var(--green); }
+.sig-hold  { background: rgba(255,181,71,0.12); color: var(--amber); }
+.sig-sell  { background: rgba(255,77,109,0.12); color: var(--red); }
+.sig-watch { background: rgba(91,143,249,0.12); color: var(--blue); }
+.rec-ticker-name { font-family: var(--font-head); font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.rec-body { font-size: 12px; color: var(--text2); line-height: 1.6; }
+.rec-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.rtag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+}
+
+.insight-box {
+  background: rgba(0,229,160,0.04);
+  border: 1px solid rgba(0,229,160,0.12);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+}
+.insight-icon { font-size: 16px; margin-bottom: 6px; }
+.insight-title { font-family: var(--font-head); font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+.insight-text { font-size: 12px; color: var(--text2); line-height: 1.6; }
+
+.risk-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.risk-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  text-align: center;
+}
+.risk-val { font-family: var(--font-head); font-size: 26px; font-weight: 800; }
+.risk-label { font-size: 10px; color: var(--text3); margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
+
+/* ── DONUT ── */
+.donut-wrap { position: relative; width: 150px; height: 150px; flex-shrink: 0; }
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 20px 32px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text3);
+  margin-top: 40px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .header, .tabs, .main { padding-left: 16px; padding-right: 16px; }
+  .cards { grid-template-columns: 1fr 1fr; }
+  .risk-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+@media(max-width:500px){
+  .cards { grid-template-columns: 1fr; }
+  .risk-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div>
+    <div class="header-logo">GA<span>.</span>portfolio</div>
+    <div style="font-size:10px;color:var(--text3);margin-top:2px;">Gustavo Alvarado · Lima, PE</div>
+  </div>
+  <div class="header-meta">
+    <div><span class="live-dot"></span>Actualizado: <span id="last-update">—</span></div>
+    <div style="margin-top:3px;">Precio est. con 15min delay (Hapi)</div>
+  </div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('portfolio')">01 · Portafolio</button>
+  <button class="tab" onclick="switchTab('pnl')">02 · P&amp;L</button>
+  <button class="tab" onclick="switchTab('projection')">03 · Proyección</button>
+  <button class="tab" onclick="switchTab('recurring')">04 · Recurrentes</button>
+  <button class="tab" onclick="switchTab('news')">05 · Noticias</button>
+  <button class="tab" onclick="switchTab('advisor')">06 · Asesor IA</button>
+</div>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- ===== 01 PORTAFOLIO ===== -->
+<div id="tab-portfolio" class="panel active">
+  <div class="cards">
+    <div class="card">
+      <div class="card-label">Total consolidado</div>
+      <div class="card-val">$93,436</div>
+      <div class="card-sub m">Hapi + Flip</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Hapi Trade</div>
+      <div class="card-val r">$16,431</div>
+      <div class="card-sub r">-$146 (-0.88%)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Flip Cobra</div>
+      <div class="card-val g">$77,036</div>
+      <div class="card-sub g">+$8,936 (+13.1%)</div>
+    </div>
+    <div class="card">
+      <div class="card-label">P&amp;L Total Hapi</div>
+      <div class="card-val g">+$63</div>
+      <div class="card-sub g">+0.51% vs costo</div>
+    </div>
+  </div>
+
+  <div class="section-hdr">Distribución consolidada</div>
+  <div style="display:flex;gap:24px;align-items:flex-start;margin-bottom:24px;flex-wrap:wrap">
+    <div class="donut-wrap">
+      <canvas id="donutChart"></canvas>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none">
+        <div style="font-size:9px;color:var(--text3)">TOTAL</div>
+        <div style="font-family:var(--font-head);font-size:14px;font-weight:700">$93.4K</div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:300px">
+      <table class="tbl">
+        <thead><tr><th>Activo</th><th>Plataforma</th><th>Valor</th><th>Peso</th><th>YTD</th></tr></thead>
+        <tbody id="alloc-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 02 P&L ===== -->
+<div id="tab-pnl" class="panel">
+  <div class="cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card">
+      <div class="card-label">Invertido Hapi</div>
+      <div class="card-val">$16,497</div>
+      <div class="card-sub m">costo promedio base</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Valor mercado</div>
+      <div class="card-val">$16,431</div>
+      <div class="card-sub m">precios actuales</div>
+    </div>
+    <div class="card">
+      <div class="card-label">P&amp;L Hapi</div>
+      <div class="card-val r">-$66</div>
+      <div class="card-sub r">-0.40% total</div>
+    </div>
+  </div>
+
+  <div class="section-hdr">Rendimiento real — precio de entrada vs. mercado actual</div>
+  <div class="tbl-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Activo</th><th>Acciones</th><th>Costo prom.</th><th>Precio actual</th>
+          <th>Invertido</th><th>Valor mkt</th><th>P&amp;L $</th><th>P&amp;L %</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="pnl-body"></tbody>
+      <tfoot id="pnl-foot"></tfoot>
+    </table>
+  </div>
+
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:12px;color:var(--text2);line-height:1.7">
+    <b style="color:var(--text)">Lectura clave:</b> IBIT (+1.91%) y ORCL (+3.33%) son tus únicas posiciones en verde vs. costo de entrada. SMH, QQQM y MSFT compraron a precios pre-corrección 2026. Con las compras de hoy a precios bajos, bajaste tu costo promedio en MSFT e IBIT — exactamente la estrategia correcta.
+  </div>
+</div>
+
+<!-- ===== 03 PROYECCIÓN ===== -->
+<div id="tab-projection" class="panel">
+  <div class="scenarios">
+    <button class="scn active" onclick="setScenario('conservative',this)">Conservador · 8%</button>
+    <button class="scn" onclick="setScenario('base',this)">Base · 12%</button>
+    <button class="scn" onclick="setScenario('optimistic',this)">Optimista · 18%</button>
+  </div>
+  <div class="proj-controls">
+    <div class="ctrl-row">
+      <span class="ctrl-label">Aporte mensual adicional</span>
+      <input type="range" min="0" max="3000" step="50" value="500" id="monthly-slider" oninput="updateProjection()">
+      <span class="ctrl-val" id="monthly-display">$500/mes</span>
+    </div>
+    <div class="ctrl-row">
+      <span class="ctrl-label">Horizonte temporal</span>
+      <input type="range" min="1" max="20" step="1" value="10" id="horizon-slider" oninput="updateProjection()">
+      <span class="ctrl-val" id="horizon-display">10 años</span>
+    </div>
+  </div>
+  <div class="cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><div class="card-label">Valor proyectado</div><div class="card-val g" id="proj-final">—</div></div>
+    <div class="card"><div class="card-label">Total aportado</div><div class="card-val" id="proj-invested">—</div></div>
+    <div class="card"><div class="card-label">Ganancia estimada</div><div class="card-val g" id="proj-gain">—</div></div>
+  </div>
+  <div class="legend" id="proj-legend"></div>
+  <div class="chart-wrap"><canvas id="projChart"></canvas></div>
+  <p style="font-size:10px;color:var(--text3);line-height:1.6">* Proyección referencial. Tasa compuesta anual. No garantiza rendimientos futuros. Base: $93,436.</p>
+</div>
+
+<!-- ===== 04 RECURRENTES ===== -->
+<div id="tab-recurring" class="panel">
+  <div class="section-hdr">Configura tu aporte mensual por activo</div>
+  <div class="rec-panel">
+    <div class="rec-row"><span class="rec-label">🐍 Flip Cobra</span><input type="number" id="r-flip" value="500" min="0" step="50" oninput="updateRec()"><select onchange="updateRec()"><option>Mensual</option><option>Quincenal</option><option>Semanal</option></select></div>
+    <div class="rec-row"><span class="rec-label">📈 MSFT</span><input type="number" id="r-msft" value="100" min="0" step="10" oninput="updateRec()"><select onchange="updateRec()"><option>Mensual</option><option>Quincenal</option><option>Semanal</option></select></div>
+    <div class="rec-row"><span class="rec-label">📈 SMH</span><input type="number" id="r-smh" value="50" min="0" step="10" oninput="updateRec()"><select onchange="updateRec()"><option>Mensual</option><option>Quincenal</option><option>Semanal</option></select></div>
+    <div class="rec-row"><span class="rec-label">₿ IBIT</span><input type="number" id="r-ibit" value="100" min="0" step="10" oninput="updateRec()"><select onchange="updateRec()"><option>Mensual</option><option>Quincenal</option><option>Semanal</option></select></div>
+    <div class="rec-row"><span class="rec-label">📈 QQQM</span><input type="number" id="r-qqqm" value="50" min="0" step="10" oninput="updateRec()"><select onchange="updateRec()"><option>Mensual</option><option>Quincenal</option><option>Semanal</option></select></div>
+    <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:6px;font-size:12px;color:var(--text3)" id="rec-summary"></div>
+  </div>
+  <div class="cards" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card"><div class="card-label">Valor en 10 años</div><div class="card-val g" id="rec-final">—</div></div>
+    <div class="card"><div class="card-label">Total aportado</div><div class="card-val" id="rec-invested">—</div></div>
+    <div class="card"><div class="card-label">Ganancia estimada</div><div class="card-val g" id="rec-gain">—</div></div>
+  </div>
+  <div class="chart-wrap" style="height:250px"><canvas id="recChart"></canvas></div>
+  <p style="font-size:10px;color:var(--text3)">* Tasa base 12% anual. Proyección referencial.</p>
+</div>
+
+<!-- ===== 05 NOTICIAS ===== -->
+<div id="tab-news" class="panel">
+  <div class="section-hdr">Noticias de mercado · 19 Mar 2026</div>
+  <div class="news-grid">
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-msft">MSFT</span><span class="sent sent-r">Riesgo</span><span class="news-date">Hoy · FT / TipRanks</span></div>
+      <div class="news-title">Microsoft puede demandar a Amazon y OpenAI por acuerdo AWS de $50B</div>
+      <div class="news-desc">Microsoft sostiene que el deal de OpenAI con AWS viola su exclusividad en Azure. Las partes negocian; MSFT advirtió con acción legal. El mercado ya lo descuenta parcialmente. 33 analistas mantienen "Strong Buy" con target $602.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-msft">MSFT</span><span class="sent sent-n">Neutral</span><span class="news-date">Ayer · CNBC</span></div>
+      <div class="news-title">Copilot reorganizado: Suleyman pierde liderazgo AI, Jacob Andreou (ex-Snap) toma el mando</div>
+      <div class="news-desc">Nadella unificó equipos comercial y consumer de Copilot. Mustafa Suleyman reasignado. El mercado lo tomó negativamente a corto plazo, analistas lo leen como ajuste operacional necesario.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-msft">MSFT</span><span class="sent sent-g">Positivo</span><span class="news-date">Hace 3 sem · Zacks</span></div>
+      <div class="news-title">Q2 FY2026: EPS $4.14 (+24% YoY), Revenue $81.3B — superó estimados en ambas líneas</div>
+      <div class="news-desc">Azure +39% YoY. 150M usuarios Copilot. FCF TTM $160B. Mercado castigó -10% por Azure desacelerando 1pp — sobrereacción según todos los analistas de cobertura.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-ibit">IBIT</span><span class="sent sent-r">Volatilidad</span><span class="news-date">Hoy · Fortune</span></div>
+      <div class="news-title">Bitcoin cae a $69,370 hoy (-4.5%) — pero ETFs registraron $200M de inflows el lunes</div>
+      <div class="news-desc">BTC bajó de $73,700 (lunes) a $69,370 esta mañana. Sin embargo IBIT lideró inflows con $169M el 17/03. Tu costo promedio es $38.67 — sigues en ganancia (+1.91%) pese a la caída.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-ibit">IBIT</span><span class="sent sent-g">Positivo</span><span class="news-date">16 Mar · FinancialContent</span></div>
+      <div class="news-title">Capital institucional "sticky": $1.3B en inflows spot BTC ETFs en primera mitad de marzo</div>
+      <div class="news-desc">A diferencia de ciclos anteriores retail, 2026 es capital institucional estable. IBIT sigue siendo el ETF de BTC más grande con $55.7B AUM. Eso da piso al precio en correcciones.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-smh">SMH</span><span class="sent sent-g">Positivo</span><span class="news-date">Esta semana · Benzinga</span></div>
+      <div class="news-title">Oracle $553B AI backlog es catalizador indirecto para semiconductores y SMH</div>
+      <div class="news-desc">Expansión masiva de data centers de Oracle, MSFT y AWS impulsa demanda de chips avanzados. SMH como ETF de los 25 mayores fabricantes es beneficiario directo del ciclo de capex AI.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-orcl">ORCL</span><span class="sent sent-g">Positivo</span><span class="news-date">12 Mar · Motley Fool</span></div>
+      <div class="news-title">Oracle Q3 FY2026: +21.7% revenue YoY, infraestructura cloud +84% — +10% post-earnings</div>
+      <div class="news-desc">Net income $3.72B (+26.7% YoY). Backlog $553B (+325% YoY). OCI emergiendo como rival real a AWS/Azure. Tu costo promedio $150.09 — ya en +3.33% de retorno.</div>
+    </div>
+
+    <div class="news-card">
+      <div class="news-meta"><span class="news-tag tag-qqqm">QQQM</span><span class="sent sent-n">Neutral</span><span class="news-date">Esta semana · ETF Trends</span></div>
+      <div class="news-title">Nasdaq 100 YTD -0.6% en 2026: valuaciones en debate, fundamentales sólidos</div>
+      <div class="news-desc">QQQM cotiza a 41.5x earnings. Retorno 12M: +23.5%. La corrección 2026 vista como oportunidad de largo plazo por gestores institucionales. Analistas señalan el AI capex como driver 2026-2027.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 06 ASESOR IA ===== -->
+<div id="tab-advisor" class="panel">
+
+  <div class="advisor-header">
+    <div class="advisor-avatar">AI</div>
+    <div>
+      <div class="advisor-name">Asesor de Inversiones · Portafolio Gustavo Alvarado</div>
+      <div class="advisor-role">Análisis basado en datos reales de posiciones · 19 Mar 2026 · Referencial, no asesoría certificada</div>
+    </div>
+  </div>
+
+  <!-- RISK SNAPSHOT -->
+  <div class="section-hdr">Perfil de riesgo actual</div>
+  <div class="risk-grid">
+    <div class="risk-card">
+      <div class="risk-val g">82%</div>
+      <div class="risk-label">% en activos growth</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-val" style="color:var(--amber)">27</div>
+      <div class="risk-label">Años · horizonte largo</div>
+    </div>
+    <div class="risk-card">
+      <div class="risk-val" style="color:var(--blue)">5</div>
+      <div class="risk-label">Activos Hapi</div>
+    </div>
+  </div>
+
+  <!-- POSITIONS -->
+  <div class="rec-section">
+    <div class="rec-section-title">Señales por posición — qué hacer ahora</div>
+
+    <div class="rec-item buy">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <div class="rec-ticker-name">MSFT</div>
+          <span class="rec-signal sig-buy">ACUMULAR</span>
+          <span style="font-size:11px;color:var(--text3)">Costo $391.69 · Mkt $390.50 · P&amp;L -0.45%</span>
+        </div>
+        <div class="rec-body">Tu posición más estratégica. Compraste a $391.69 promedio y el precio está en $390 — prácticamente en tu punto de entrada. El mercado castigó -19% YTD por la desaceleración de Azure de 40% a 39% YoY, que es ruido de corto plazo. Los fundamentos son irreprochables: revenue +17% YoY, EPS +24%, FCF $160B, 150M usuarios Copilot. El target consensuado de analistas es $602 (+54% upside). Próximo catalizador: earnings Q3 FY2026 el 28 de abril. <b style="color:var(--green)">Si el precio cae por debajo de $380, considera agregar.</b> Horizonte recomendado: 12-24 meses.</div>
+        <div class="rec-tags">
+          <span class="rtag">Target: $602</span>
+          <span class="rtag">Earnings: 28 Abr</span>
+          <span class="rtag">Azure 39% YoY</span>
+          <span class="rtag">Strong Buy 33/33</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-item buy">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <div class="rec-ticker-name">IBIT</div>
+          <span class="rec-signal sig-buy">MANTENER / ACUMULAR</span>
+          <span style="font-size:11px;color:var(--text3)">Costo $38.68 · Mkt $39.53 · P&amp;L +1.91%</span>
+        </div>
+        <div class="rec-body">Tu única posición que ya está en verde desde entrada. Entraste bien — costo promedio $38.67 antes de que BTC subiera a $73K+ y mientras volvía a caer a $69K. El patrón institucional es claro: $1.3B en inflows en la primera quincena de marzo muestra que el capital "smart money" ve estos precios como oportunidad. Bitcoin a $69K es -51% desde su ATH de octubre 2025 ($141K). Históricamente, estas correcciones son zonas de acumulación. <b style="color:var(--green)">Con 27 años y sin gastos fijos, esta es la posición donde más puedes tolerar volatilidad.</b> El próximo nivel a vigilar es $80K.</div>
+        <div class="rec-tags">
+          <span class="rtag">BTC: $69,370</span>
+          <span class="rtag">Inflows: $200M/día</span>
+          <span class="rtag">Target analistas: $80K+</span>
+          <span class="rtag">AUM IBIT: $55.7B</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-item hold">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <div class="rec-ticker-name">SMH</div>
+          <span class="rec-signal sig-hold">MANTENER</span>
+          <span style="font-size:11px;color:var(--text3)">Costo $395.91 · Mkt $391.40 · P&amp;L -1.11%</span>
+        </div>
+        <div class="rec-body">Tu mejor performer YTD (+12.9%) pero en pérdida vs tu costo de entrada por las compras previas a precio más alto. A $391 vs costo de $395, estás a solo 1% de recuperar. La tesis es completamente intacta: el capex en AI infrastructure de MSFT, Oracle y AWS es directamente proporcional a la demanda de semiconductores. El backlog de $553B de Oracle solo es ejecutable con más chips. <b style="color:var(--amber)">No agregues por ahora — espera que recupere tu costo promedio antes de ampliar posición.</b> No hay urgencia de vender.</div>
+        <div class="rec-tags">
+          <span class="rtag">YTD: +12.9%</span>
+          <span class="rtag">Fair value: $518</span>
+          <span class="rtag">AI tailwind intacto</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-item hold">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <div class="rec-ticker-name">QQQM</div>
+          <span class="rec-signal sig-hold">MANTENER</span>
+          <span style="font-size:11px;color:var(--text3)">Costo $247.76 · Mkt $243.85 · P&amp;L -1.74%</span>
+        </div>
+        <div class="rec-body">Es tu ancla de diversificación en Hapi, pero con la Cobra Achorada en Flip (básicamente S&P 500), hay cierta superposición. La diferencia: QQQM es Nasdaq 100 — más concentrado en tech vs el S&P 500 más amplio de la Cobra. <b style="color:var(--amber)">No agregues aquí, ya tienes suficiente exposición al mercado broad a través de Flip.</b> El -1.74% vs costo se recupera fácil con el rebote del Nasdaq. Si quieras tomar riesgo adicional, hay mejores vehículos en tu portafolio.</div>
+        <div class="rec-tags">
+          <span class="rtag">Solapamiento con Cobra</span>
+          <span class="rtag">Retorno 12M: +23.5%</span>
+          <span class="rtag">No agregar</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rec-item hold">
+      <div style="flex:1">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+          <div class="rec-ticker-name">ORCL</div>
+          <span class="rec-signal sig-hold">MANTENER PEQUEÑA</span>
+          <span style="font-size:11px;color:var(--text3)">Costo $150.09 · Mkt $155.84 · P&amp;L +3.33%</span>
+        </div>
+        <div class="rec-body">Mejor performance de tu portafolio vs costo de entrada (+3.33%). El Q3 FY2026 fue muy sólido: +21.7% revenue, backlog $553B, OCI +84%. El riesgo es real: $43B en deuda nueva emitida y FCF negativo por el capex masivo. <b style="color:var(--amber)">Con solo $723 en posición, es correctamente pequeña. No amplíes hasta ver mejora en flujo de caja libre.</b> Próximo catalizador: Q4 earnings en junio. Si sigues acumulando ganancias, considera tomar profit parcial en $170+.</div>
+        <div class="rec-tags">
+          <span class="rtag">Backlog: $553B</span>
+          <span class="rtag">Deuda: $43B riesgo</span>
+          <span class="rtag">Take profit: $170+</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STRATEGIC INSIGHTS -->
+  <div class="rec-section">
+    <div class="rec-section-title">Insights estratégicos — visión de portafolio completo</div>
+
+    <div class="insight-box">
+      <div class="insight-icon">🏗️</div>
+      <div class="insight-title">Tu estructura de portafolio es profesionalmente sólida</div>
+      <div class="insight-text">$77K en Cobra Achorada (S&P 500 pasivo) + $16K en activos concentrados en Hapi es exactamente la estrategia de un inversor joven bien informado: base segura de largo plazo más capa activa de riesgo calculado. A los 27, con 30+ años por delante, el tiempo trabaja masivamente a tu favor con esta estructura.</div>
+    </div>
+
+    <div class="insight-box" style="background:rgba(91,143,249,0.04);border-color:rgba(91,143,249,0.12)">
+      <div class="insight-icon">💡</div>
+      <div class="insight-title">Movimiento a considerar: Flip > $1,000/mes recurrente</div>
+      <div class="insight-text">Tu mayor palanca de creación de riqueza no es cuándo comprar ni qué comprar — es cuánto aportas consistentemente. Si subes tu aporte mensual a la Cobra de $500 a $1,000/mes, en 10 años la diferencia es de ~$100K adicionales. Sin gastos fijos, este es el momento de maximizar el aporte recurrente. Es tu "motor silencioso".</div>
+    </div>
+
+    <div class="insight-box" style="background:rgba(255,181,71,0.04);border-color:rgba(255,181,71,0.12)">
+      <div class="insight-icon">⚠️</div>
+      <div class="insight-title">Riesgo de concentración: 82% en tech / AI</div>
+      <div class="insight-text">QQQM + SMH + MSFT + ORCL + la Cobra (pesada en tech) = exposición masiva a un solo sector. Funciona brillantemente cuando el ciclo AI está arriba. El riesgo es un sell-off tech prolongado como el de 2022 (-33%). A tus 27 años puedes tolerarlo perfectamente — solo debes ser consciente de que en un año malo puedes ver -20% a -30% en valor total. Eso es normal y recuperable.</div>
+    </div>
+
+    <div class="insight-box" style="background:rgba(255,77,109,0.04);border-color:rgba(255,77,109,0.12)">
+      <div class="insight-icon">🎯</div>
+      <div class="insight-title">Próxima acción recomendada: Vigila MSFT earnings el 28 Abr</div>
+      <div class="insight-text">El 28 de abril Microsoft reporta Q3 FY2026. Si Azure recupera aceleración (40%+ YoY) el mercado puede revaluar la acción violentamente al alza desde $390 hacia el target de $600. Si vuelve a decepcionar, puede caer otro 10%. Considera si quieres agregar posición antes del 28 (mayor riesgo/reward) o esperar el resultado (más información, menos volatilidad).</div>
+    </div>
+
+  </div>
+
+  <!-- WATCHLIST -->
+  <div class="rec-section">
+    <div class="rec-section-title">Watchlist — activos a monitorear para futura entrada</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="rec-item watch" style="border-left-color:var(--blue)">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+            <div class="rec-ticker-name" style="font-size:13px">NVDA</div>
+            <span class="rec-signal sig-watch">EN RADAR</span>
+          </div>
+          <div class="rec-body">Nvidia sigue siendo el pick más directo del ciclo AI. Corrigió ~25% desde máximos. Si baja a zona $90-95, sería entrada interesante. Aún no está en precio óptimo pero vale seguirla de cerca.</div>
+        </div>
+      </div>
+      <div class="rec-item watch" style="border-left-color:var(--blue)">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+            <div class="rec-ticker-name" style="font-size:13px">META</div>
+            <span class="rec-signal sig-watch">EN RADAR</span>
+          </div>
+          <div class="rec-body">Meta cotiza a valuaciones razonables con +20% revenue growth. AI monetization via ads es el caso de uso más directo y rentable del momento. Complementaría tu portafolio reduciendo concentración en cloud.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:10px;color:var(--text3);line-height:1.6;margin-top:8px">⚠ Este análisis es referencial generado por IA con base en datos públicos al 19 Mar 2026. No constituye asesoría financiera certificada. Consulta con un asesor regulado antes de tomar decisiones de inversión significativas.</p>
+</div>
+
+</main>
+
+<footer class="footer">
+  GA.portfolio · Dashboard personal de inversiones · Gustavo Alvarado · Lima, PE<br>
+  Datos Hapi Trade con 15min delay · Flip Inversiones actualizado al 17/03/2026 · Precios de mercado referenciales
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const TOTAL_CONS = 93436;
+const FLIP_VAL   = 77036;
+const HAPI = [
+  { ticker:'SMH',  name:'VanEck Semiconductor', shares:11.363, costAvg:395.912, mktVal:4448.61, invested:4498.74, ytd:12.9,  color:'#b17bff' },
+  { ticker:'QQQM', name:'Invesco Nasdaq 100',    shares:18.163, costAvg:247.757, mktVal:4421.68, invested:4499.99, ytd:-0.6,  color:'#ff4d6d' },
+  { ticker:'MSFT', name:'Microsoft',             shares:9.700,  costAvg:391.693, mktVal:3782.10, invested:3799.49, ytd:-17.4, color:'#5b8ff9' },
+  { ticker:'IBIT', name:'iShares Bitcoin',       shares:77.537, costAvg:38.678,  mktVal:3056.49, invested:2998.99, ytd:-14.5, color:'#ffb547' },
+  { ticker:'ORCL', name:'Oracle',                shares:4.664,  costAvg:150.09,  mktVal:723.31,  invested:699.99,  ytd:-18.1, color:'#00e5a0' },
+];
+const ALL = [
+  { ticker:'COBRA', name:'Flip Cobra Achorada', value:FLIP_VAL, color:'#00e5a0' },
+  ...HAPI.map(a=>({ ticker:a.ticker, name:a.name, value:a.mktVal, color:a.color }))
+];
+const TOTAL_HAPI_MKT = HAPI.reduce((s,a)=>s+a.mktVal,0);
+const TOTAL_HAPI_INV = HAPI.reduce((s,a)=>s+a.invested,0);
+const RATES = { conservative:0.08, base:0.12, optimistic:0.18 };
+let scenario = 'conservative';
+let projChart = null, recChart = null, donutChart = null;
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+const fmt  = v => '$' + Math.abs(Math.round(v)).toLocaleString('en-US');
+const fmtS = v => (v>=0?'+':'-') + fmt(v);
+const fmtP = v => (v>=0?'+':'') + v.toFixed(2) + '%';
+const c    = v => v>=0?'g':'r';
+
+// ── TIMESTAMP ─────────────────────────────────────────────────────────────
+function updateTime() {
+  const now = new Date();
+  document.getElementById('last-update').textContent =
+    now.toLocaleDateString('es-PE',{day:'2-digit',month:'short',year:'numeric'}) +
+    ' · ' + now.toLocaleTimeString('es-PE',{hour:'2-digit',minute:'2-digit'});
+}
+updateTime();
+
+// ── TABS ──────────────────────────────────────────────────────────────────
+function switchTab(id) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const ids = ['portfolio','pnl','projection','recurring','news','advisor'];
+  document.querySelectorAll('.tab')[ids.indexOf(id)].classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  if(id==='projection') updateProjection();
+  if(id==='recurring')  updateRec();
+}
+
+// ── DONUT ─────────────────────────────────────────────────────────────────
+function buildDonut() {
+  const ctx = document.getElementById('donutChart').getContext('2d');
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ALL.map(a=>a.ticker),
+      datasets: [{ data: ALL.map(a=>a.value), backgroundColor: ALL.map(a=>a.color),
+        borderWidth: 2, borderColor: '#0a0a0f' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '70%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${fmt(ctx.raw)} (${(ctx.raw/TOTAL_CONS*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+}
+
+// ── ALLOCATION TABLE ───────────────────────────────────────────────────────
+function buildAlloc() {
+  const tbody = document.getElementById('alloc-body');
+  ALL.forEach(a => {
+    const pct  = (a.value/TOTAL_CONS*100).toFixed(1);
+    const plat = a.ticker==='COBRA'?'Flip':'Hapi';
+    const hapiD= HAPI.find(h=>h.ticker===a.ticker);
+    const ytd  = a.ticker==='COBRA' ? '+13.1%' : (hapiD?(hapiD.ytd>=0?'+':'')+hapiD.ytd+'%':'—');
+    const ytdC = (a.ticker==='COBRA'||hapiD?.ytd>=0)?'g':'r';
+    tbody.innerHTML += `<tr>
+      <td><span class="dot" style="background:${a.color}"></span><b>${a.ticker}</b></td>
+      <td><span class="badge">${plat}</span></td>
+      <td style="font-weight:500">${fmt(a.value)}</td>
+      <td style="color:var(--text2)">${pct}%</td>
+      <td class="${ytdC}">${ytd}</td>
+    </tr>`;
+  });
+}
+
+// ── P&L TABLE ─────────────────────────────────────────────────────────────
+function buildPnl() {
+  const tbody = document.getElementById('pnl-body');
+  const tfoot = document.getElementById('pnl-foot');
+  const maxAbs = Math.max(...HAPI.map(a=>Math.abs(a.mktVal-a.invested)));
+  HAPI.forEach(a => {
+    const pl    = a.mktVal - a.invested;
+    const plPct = (pl / a.invested * 100);
+    const bw    = Math.min(60, Math.abs(pl)/maxAbs*60);
+    const bc    = pl>=0?'#00e5a0':'#ff4d6d';
+    const cp    = (a.mktVal/a.shares).toFixed(2);
+    tbody.innerHTML += `<tr>
+      <td><span class="dot" style="background:${a.color}"></span><b>${a.ticker}</b><br><span style="font-size:10px;color:var(--text3)">${a.name}</span></td>
+      <td style="color:var(--text2)">${a.shares.toFixed(3)}</td>
+      <td>$${a.costAvg.toFixed(2)}</td>
+      <td>$${cp}</td>
+      <td style="color:var(--text2)">${fmt(a.invested)}</td>
+      <td style="font-weight:500">${fmt(a.mktVal)}</td>
+      <td class="${c(pl)}" style="font-weight:500">${fmtS(pl)}</td>
+      <td class="${c(pl)}">${fmtP(plPct)}</td>
+      <td><div class="pl-bar" style="width:${bw}px;background:${bc}"></div></td>
+    </tr>`;
+  });
+  const tpl = TOTAL_HAPI_MKT - TOTAL_HAPI_INV;
+  const tpc = (tpl/TOTAL_HAPI_INV*100);
+  tfoot.innerHTML = `<tr>
+    <td colspan="4" style="font-size:11px;color:var(--text3)">TOTAL HAPI</td>
+    <td>${fmt(TOTAL_HAPI_INV)}</td>
+    <td style="font-weight:500">${fmt(TOTAL_HAPI_MKT)}</td>
+    <td class="${c(tpl)}" style="font-weight:500">${fmtS(tpl)}</td>
+    <td class="${c(tpl)}">${fmtP(tpc)}</td>
+    <td></td>
+  </tr>`;
+}
+
+// ── PROJECTION ────────────────────────────────────────────────────────────
+function setScenario(s, btn) {
+  scenario = s;
+  document.querySelectorAll('.scn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updateProjection();
+}
+function updateProjection() {
+  const monthly = parseFloat(document.getElementById('monthly-slider').value);
+  const years   = parseInt(document.getElementById('horizon-slider').value);
+  document.getElementById('monthly-display').textContent = '$' + monthly.toLocaleString() + '/mes';
+  document.getElementById('horizon-display').textContent = years + ' año' + (years>1?'s':'');
+  const rate = RATES[scenario];
+  const labels=[],wR=[],noR=[],inv=[];
+  let vw=TOTAL_CONS,vn=TOTAL_CONS,ti=TOTAL_CONS;
+  for(let y=0;y<=years;y++){
+    labels.push(y===0?'Hoy':`Año ${y}`);
+    wR.push(Math.round(vw)); noR.push(Math.round(vn)); inv.push(Math.round(ti));
+    vw=vw*(1+rate)+monthly*12; vn=vn*(1+rate); ti+=monthly*12;
+  }
+  document.getElementById('proj-final').textContent    = fmt(wR[years]);
+  document.getElementById('proj-invested').textContent = fmt(inv[years]);
+  document.getElementById('proj-gain').textContent     = fmtS(wR[years]-inv[years]);
+  document.getElementById('proj-legend').innerHTML = `
+    <div class="legend-item"><div class="legend-sq" style="background:#00e5a0"></div>Con aportes (${Math.round(rate*100)}%/año)</div>
+    <div class="legend-item"><div class="legend-sq" style="background:#5b8ff9"></div>Sin aportes adicionales</div>
+    <div class="legend-item"><div class="legend-sq" style="background:rgba(255,255,255,0.15)"></div>Capital invertido</div>`;
+  if(projChart) projChart.destroy();
+  const ctx = document.getElementById('projChart').getContext('2d');
+  projChart = new Chart(ctx, {
+    type:'line',
+    data:{ labels, datasets:[
+      { label:'Con aportes',      data:wR,  borderColor:'#00e5a0', backgroundColor:'rgba(0,229,160,0.06)', fill:true, tension:0.35, pointRadius:2, borderWidth:2 },
+      { label:'Sin aportes',      data:noR, borderColor:'#5b8ff9', backgroundColor:'transparent',          fill:false,tension:0.35, pointRadius:2, borderWidth:1.5, borderDash:[5,4] },
+      { label:'Capital invertido',data:inv, borderColor:'rgba(255,255,255,0.15)', backgroundColor:'rgba(255,255,255,0.04)', fill:true, tension:0, pointRadius:0, borderWidth:1, borderDash:[3,3] },
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx=>` ${ctx.dataset.label}: ${fmt(ctx.raw)}` } } },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{font:{size:10},color:'#5a5970',maxRotation:0} },
+        y:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{font:{size:10},color:'#5a5970',
+            callback: v => v>=1e6?'$'+Math.round(v/1e5)/10+'M':v>=1000?'$'+Math.round(v/1000)+'K':'$'+v } }
+      }
+    }
+  });
+}
+
+// ── RECURRING ─────────────────────────────────────────────────────────────
+function updateRec() {
+  const vals = {
+    flip: parseFloat(document.getElementById('r-flip').value)||0,
+    msft: parseFloat(document.getElementById('r-msft').value)||0,
+    smh:  parseFloat(document.getElementById('r-smh').value)||0,
+    ibit: parseFloat(document.getElementById('r-ibit').value)||0,
+    qqqm: parseFloat(document.getElementById('r-qqqm').value)||0,
+  };
+  const totalM = Object.values(vals).reduce((s,v)=>s+v,0);
+  document.getElementById('rec-summary').innerHTML =
+    `<b>Aporte mensual total: ${fmt(totalM)}</b> · Anual: ${fmt(totalM*12)}`;
+  const rate=0.12, years=10;
+  const labels=['Hoy'],wR=[TOTAL_CONS],noR=[TOTAL_CONS],inv=[TOTAL_CONS];
+  let vw=TOTAL_CONS,vn=TOTAL_CONS,ti=TOTAL_CONS;
+  for(let y=1;y<=years;y++){
+    vw=vw*(1+rate)+totalM*12; vn=vn*(1+rate); ti+=totalM*12;
+    labels.push(`Año ${y}`); wR.push(Math.round(vw)); noR.push(Math.round(vn)); inv.push(Math.round(ti));
+  }
+  document.getElementById('rec-final').textContent    = fmt(wR[years]);
+  document.getElementById('rec-invested').textContent = fmt(inv[years]);
+  document.getElementById('rec-gain').textContent     = fmtS(wR[years]-inv[years]);
+  if(recChart) recChart.destroy();
+  const ctx = document.getElementById('recChart').getContext('2d');
+  recChart = new Chart(ctx, {
+    type:'bar',
+    data:{ labels, datasets:[
+      { label:'Capital invertido', data:inv, backgroundColor:'rgba(255,255,255,0.08)', borderRadius:3, order:2 },
+      { label:'Con aportes',       data:wR,  type:'line', borderColor:'#00e5a0', fill:false, tension:0.35, pointRadius:2, borderWidth:2, order:1 },
+      { label:'Sin aportes',       data:noR, type:'line', borderColor:'#5b8ff9', fill:false, tension:0.35, pointRadius:2, borderWidth:1.5, borderDash:[4,3], order:0 },
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label: ctx=>` ${ctx.dataset.label}: ${fmt(ctx.raw)}` } } },
+      scales:{
+        x:{ grid:{display:false}, ticks:{font:{size:10},color:'#5a5970',maxRotation:0} },
+        y:{ grid:{color:'rgba(255,255,255,0.04)'}, ticks:{font:{size:10},color:'#5a5970',
+            callback: v => v>=1e6?'$'+Math.round(v/1e5)/10+'M':v>=1000?'$'+Math.round(v/1000)+'K':'$'+v } }
+      }
+    }
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+buildDonut(); buildAlloc(); buildPnl(); updateRec();
+</script>
+</body>
+</html>
