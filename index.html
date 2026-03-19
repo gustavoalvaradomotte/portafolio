@@ -1053,8 +1053,9 @@ async function fetchLive() {
   }
   const hapiTotal = HAPI.reduce((s,a) => s+a.mv, 0);
   const consTotal = 77036 + hapiTotal;
-  document.querySelectorAll('.metric-val')[0].textContent = '$' + Math.round(consTotal).toLocaleString('en-US');
-  document.querySelectorAll('.metric-val')[1].textContent = '$' + Math.round(hapiTotal).toLocaleString('en-US');
+  const cards = document.querySelectorAll('.metric-val');
+if(cards[0]) cards[0].textContent = '$' + Math.round(consTotal).toLocaleString('en-US');
+if(cards[1]) cards[1].textContent = '$' + Math.round(hapiTotal).toLocaleString('en-US');
   const ts = document.querySelector('.topbar-sub');
   if(ts) ts.textContent = 'En vivo · ' + new Date().toLocaleTimeString('es-PE') + ' · Hapi + Flip';
 }
